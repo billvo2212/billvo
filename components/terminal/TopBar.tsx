@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import CommandInput from "./CommandInput";
 import CrtToggle from "./CrtToggle";
+import { useShortcutLabel } from "@/lib/use-mod-key";
 
 const NAV = [
   { label: "about", href: "/about" },
@@ -21,10 +22,13 @@ export default function TopBar() {
   const pathname = usePathname();
   const router = useRouter();
   const [showInput, setShowInput] = useState(false);
+  const shortcutLabel = useShortcutLabel();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+      const isMacCombo = e.metaKey && e.key === "k";
+      const isWinCombo = e.ctrlKey && e.key === "/";
+      if (isMacCombo || isWinCombo) {
         e.preventDefault();
         setShowInput((v) => !v);
       }
@@ -35,7 +39,7 @@ export default function TopBar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 backdrop-blur bg-bg/80 border-b border-border">
+    <header className="sticky top-0 z-40 border-b border-border bg-bg/80 backdrop-blur">
       <div className="container max-w-4xl px-4 md:px-6">
         <div className="flex items-center gap-3 py-2">
           <div className="flex gap-1.5">
@@ -45,18 +49,19 @@ export default function TopBar() {
           </div>
           <Link
             href="/"
-            className="text-xs md:text-sm text-fg-dim hover:text-mono-green transition-colors"
+            className="text-xs text-fg-dim transition-colors hover:text-mono-green md:text-sm"
           >
-            billvo@portfolio:<span className="text-mono-blue">~{pathname === "/" ? "" : pathname}</span>
+            billvo@portfolio:
+            <span className="text-mono-blue">~{pathname === "/" ? "" : pathname}</span>
             <span className="text-mono-green">$</span>
           </Link>
           <div className="ml-auto flex items-center gap-2">
             <button
               onClick={() => setShowInput((v) => !v)}
-              className="hidden md:inline-flex items-center gap-1 text-xs text-fg-muted hover:text-mono-green border border-border rounded px-2 py-1"
+              className="hidden items-center gap-1 rounded border border-border px-2 py-1 text-xs text-fg-muted hover:text-mono-green md:inline-flex"
               aria-label="Open command palette"
             >
-              <span className="text-mono-green">⌘</span>K
+              <span className="text-mono-green">{shortcutLabel}</span>
             </button>
             <CrtToggle />
           </div>
@@ -71,7 +76,7 @@ export default function TopBar() {
                 className={
                   active
                     ? "text-mono-green"
-                    : "text-fg-muted hover:text-mono-blue transition-colors"
+                    : "text-fg-muted transition-colors hover:text-mono-blue"
                 }
               >
                 <span className="text-fg-muted">cd </span>

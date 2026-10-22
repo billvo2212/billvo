@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { hobbies } from "@/data/hobbies";
 import { projects } from "@/data/projects";
 import { profile } from "@/data/profile";
+import { useShortcutLabel } from "@/lib/use-mod-key";
 
 type Props = {
   onClose: () => void;
@@ -17,6 +18,7 @@ type Ctx = {
   pathname: string;
   args: string[];
   bootedAt: number;
+  shortcutLabel: string;
 };
 
 type Line = { prompt?: string; output?: string; kind?: "info" | "error" | "ok" };
@@ -79,7 +81,8 @@ const FORTUNES = [
   "the computer is a bicycle for the mind",
 ];
 
-const NEOFETCH = `
+function neofetch(shortcut: string) {
+  return `
        .--.             billvo@portfolio
       |o_o |            ----------------
       |:_/ |            OS      : billvo-os 0.2.0 (monokai)
@@ -88,8 +91,9 @@ const NEOFETCH = `
    /'\\_   _/\`\\          Shell   : zsh (simulated)
    \\___)=(___/          Theme   : Monokai
                         Font    : JetBrains Mono
-                        Terms   : ⌘K · esc to close
+                        Terms   : ${shortcut} · esc to close
 `.trimEnd();
+}
 
 const SL = String.raw`
       ====        ________                ___________
@@ -222,7 +226,10 @@ const COMMANDS: Record<string, Cmd> = {
       return COMMANDS[c] ? `/usr/bin/${c}` : `${c} not found`;
     },
   },
-  neofetch: { desc: "stylized system info", action: () => NEOFETCH },
+  neofetch: {
+    desc: "stylized system info",
+    action: ({ shortcutLabel }) => neofetch(shortcutLabel),
+  },
   fortune: {
     desc: "a random thought",
     action: () => FORTUNES[Math.floor(Math.random() * FORTUNES.length)],
@@ -264,7 +271,8 @@ const COMMANDS: Record<string, Cmd> = {
   },
   "hire-me": {
     desc: "contact info",
-    action: () => `mail  : ${profile.email}\ngithub: ${profile.github}\nlinkedin: ${profile.linkedin}`,
+    action: () =>
+      `mail  : ${profile.email}\ngithub: ${profile.github}\nlinkedin: ${profile.linkedin}`,
   },
   curl: {
     desc: "transfer data from a server",
@@ -342,6 +350,7 @@ function resolveCd(arg: string, cwd: string, prev: string): string | null {
 
 export default function CommandInput({ onClose, onNavigate }: Props) {
   const pathname = usePathname();
+  const shortcutLabel = useShortcutLabel();
   const [history, setHistory] = useState<Line[]>([
     { prompt: "", output: "type `help` to list commands · esc to close", kind: "info" },
   ]);
@@ -389,6 +398,7 @@ export default function CommandInput({ onClose, onNavigate }: Props) {
       pathname,
       args,
       bootedAt: bootedAt.current,
+      shortcutLabel,
     };
 
     // special forms
@@ -407,7 +417,10 @@ export default function CommandInput({ onClose, onNavigate }: Props) {
       const grouped = entries
         .map(([k, v], i) => `  ${labels[i].padEnd(width)} ${v.desc}`)
         .join("\n");
-      push(cmd, `available commands — try \`man <cmd>\` for details:\n${grouped}\n\nhidden: try \`rm -rf /\`, ↑↑↓↓←→←→ba`);
+      push(
+        cmd,
+        `available commands — try \`man <cmd>\` for details:\n${grouped}\n\nhidden: try \`rm -rf /\`, ↑↑↓↓←→←→ba`,
+      );
       return;
     }
     if (name === "man") {
@@ -466,13 +479,10 @@ export default function CommandInput({ onClose, onNavigate }: Props) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[100] bg-bg/50 backdrop-blur-lg flex items-center justify-center px-4"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-bg/50 px-4 backdrop-blur-lg"
       onClick={onClose}
     >
-      <div
-        className="window w-full max-w-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="window w-full max-w-2xl" onClick={(e) => e.stopPropagation()}>
         <div className="window-chrome">
           <div className="flex gap-1.5">
             <span className="dot dot-red" />
@@ -483,7 +493,7 @@ export default function CommandInput({ onClose, onNavigate }: Props) {
         </div>
         <div
           ref={scrollRef}
-          className="p-4 h-80 overflow-y-auto text-sm whitespace-pre-wrap font-mono"
+          className="h-80 overflow-y-auto whitespace-pre-wrap p-4 font-mono text-sm"
         >
           {history.map((l, i) => (
             <div key={i} className="mb-1">
@@ -499,7 +509,7 @@ export default function CommandInput({ onClose, onNavigate }: Props) {
                     l.kind === "error"
                       ? "text-mono-pink"
                       : l.kind === "info"
-                        ? "text-fg-muted italic"
+                        ? "italic text-fg-muted"
                         : l.kind === "ok"
                           ? "text-mono-green"
                           : "text-fg-dim"
@@ -548,7 +558,7 @@ export default function CommandInput({ onClose, onNavigate }: Props) {
                   if (matches.length === 1) setInput(matches[0]);
                 }
               }}
-              className="flex-1 bg-transparent outline-none text-fg caret-mono-green"
+              className="flex-1 bg-transparent text-fg caret-mono-green outline-none"
               autoComplete="off"
               spellCheck={false}
             />
