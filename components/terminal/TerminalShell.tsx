@@ -37,7 +37,7 @@ function Footer() {
           <span className="text-fg-dim">built by bill vo</span>
         </span>
         <span>
-          <a href="https://github.com/billvo2212/portfolio" className="link">source</a>
+          <a href="https://github.com/billvo2212/billvo" className="link">source</a>
           <span className="mx-2 text-fg-muted">·</span>
           <span>type <code className="text-mono-orange">help</code> for commands</span>
         </span>
