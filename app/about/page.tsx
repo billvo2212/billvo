@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { Window, PageHeader } from "@/components/terminal/Window";
 import { profile } from "@/data/profile";
+
+export const metadata: Metadata = {
+  title: "about",
+  description: `${profile.name} — ${profile.tagline}.`,
+};
 
 export default function AboutPage() {
   return (
@@ -14,9 +20,15 @@ export default function AboutPage() {
           <h2>## stats</h2>
           <ul>
             <li>location: {profile.location}</li>
-            <li>mail: <a href={`mailto:${profile.email}`}>{profile.email}</a></li>
-            <li>github: <a href={profile.github}>@{profile.handle}</a></li>
-            <li>linkedin: <a href={profile.linkedin}>linkedin.com</a></li>
+            <li>
+              mail: <a href={`mailto:${profile.email}`}>{profile.email}</a>
+            </li>
+            <li>
+              github: <a href={profile.github}>@{profile.handle}</a>
+            </li>
+            <li>
+              linkedin: <a href={profile.linkedin}>linkedin.com</a>
+            </li>
           </ul>
           <h2>## values i try (and often fail) to live by</h2>
           <ul>

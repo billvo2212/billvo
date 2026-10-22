@@ -1,17 +1,23 @@
+import type { Metadata } from "next";
 import { Window, PageHeader } from "@/components/terminal/Window";
 import { experience, education } from "@/data/experience";
 import { profile } from "@/data/profile";
+
+export const metadata: Metadata = {
+  title: "resume",
+  description: `${profile.name}'s resume — experience, education, contact.`,
+};
 
 export default function ResumePage() {
   return (
     <div className="space-y-6">
       <PageHeader cmd="git log --oneline --all --author=billvo" />
 
-      <div className="flex flex-wrap items-center gap-3 -mt-2">
+      <div className="-mt-2 flex flex-wrap items-center gap-3">
         <a
           href="/resume.pdf"
           download="bill-vo-resume.pdf"
-          className="inline-flex items-center gap-2 text-sm bg-mono-green/10 border border-mono-green/60 text-mono-green hover:bg-mono-green hover:text-bg px-3 py-1.5 rounded-md transition-colors"
+          className="inline-flex items-center gap-2 rounded-md border border-mono-green/60 bg-mono-green/10 px-3 py-1.5 text-sm text-mono-green transition-colors hover:bg-mono-green hover:text-bg"
         >
           <span>↓</span>
           <span>download resume.pdf</span>
@@ -20,7 +26,7 @@ export default function ResumePage() {
           href="/resume.pdf"
           target="_blank"
           rel="noreferrer"
-          className="text-sm text-fg-muted hover:text-mono-blue underline underline-offset-4 decoration-dotted"
+          className="text-sm text-fg-muted underline decoration-dotted underline-offset-4 hover:text-mono-blue"
         >
           open in new tab →
         </a>
@@ -37,19 +43,21 @@ export default function ResumePage() {
                   <span className="text-fg-muted">@</span>{" "}
                   <span className="text-mono-blue">{r.company}</span>
                 </span>
-                <span className="text-fg-muted text-xs ml-auto">({r.period})</span>
+                <span className="ml-auto text-xs text-fg-muted">({r.period})</span>
               </div>
-              <ul className="pl-[9ch] mt-2 space-y-1.5 text-fg-dim">
+              <ul className="mt-2 space-y-1.5 pl-[9ch] text-fg-dim">
                 {r.bullets.map((b, i) => (
                   <li key={i} className="flex gap-2">
-                    <span className="text-mono-green shrink-0">▸</span>
+                    <span className="shrink-0 text-mono-green">▸</span>
                     <span>{b}</span>
                   </li>
                 ))}
               </ul>
-              <div className="pl-[9ch] mt-3 flex flex-wrap gap-1.5">
+              <div className="mt-3 flex flex-wrap gap-1.5 pl-[9ch]">
                 {r.tags.map((t) => (
-                  <span key={t} className="tag">{t}</span>
+                  <span key={t} className="tag">
+                    {t}
+                  </span>
                 ))}
               </div>
             </li>
@@ -63,7 +71,7 @@ export default function ResumePage() {
             <li key={i}>
               <div className="text-mono-green">{e.degree}</div>
               <div className="text-fg-dim">{e.school}</div>
-              <div className="text-fg-muted text-xs">
+              <div className="text-xs text-fg-muted">
                 {e.period} · {e.note}
               </div>
             </li>
@@ -72,10 +80,25 @@ export default function ResumePage() {
       </Window>
 
       <Window title="contact">
-        <div className="font-mono text-sm space-y-1">
-          <div><span className="text-mono-blue">email:</span>{" "}<a className="link" href={`mailto:${profile.email}`}>{profile.email}</a></div>
-          <div><span className="text-mono-blue">github:</span>{" "}<a className="link" href={profile.github}>@{profile.handle}</a></div>
-          <div><span className="text-mono-blue">linkedin:</span>{" "}<a className="link" href={profile.linkedin}>linkedin</a></div>
+        <div className="space-y-1 font-mono text-sm">
+          <div>
+            <span className="text-mono-blue">email:</span>{" "}
+            <a className="link" href={`mailto:${profile.email}`}>
+              {profile.email}
+            </a>
+          </div>
+          <div>
+            <span className="text-mono-blue">github:</span>{" "}
+            <a className="link" href={profile.github}>
+              @{profile.handle}
+            </a>
+          </div>
+          <div>
+            <span className="text-mono-blue">linkedin:</span>{" "}
+            <a className="link" href={profile.linkedin}>
+              linkedin
+            </a>
+          </div>
         </div>
       </Window>
     </div>
