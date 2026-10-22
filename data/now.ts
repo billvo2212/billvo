@@ -1,4 +1,4 @@
-// TODO: replace this when you remember to. the point of a Now page is
+
 // it goes stale, so set a calendar reminder to refresh it quarterly.
 export const now = {
   updated: "2026-10-20",
