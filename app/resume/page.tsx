@@ -39,8 +39,15 @@ export default function ResumePage() {
                 </span>
                 <span className="text-fg-muted text-xs ml-auto">({r.period})</span>
               </div>
-              <div className="pl-[9ch] mt-1 text-fg-dim">{r.summary}</div>
-              <div className="pl-[9ch] mt-2 flex flex-wrap gap-1.5">
+              <ul className="pl-[9ch] mt-2 space-y-1.5 text-fg-dim">
+                {r.bullets.map((b, i) => (
+                  <li key={i} className="flex gap-2">
+                    <span className="text-mono-green shrink-0">▸</span>
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="pl-[9ch] mt-3 flex flex-wrap gap-1.5">
                 {r.tags.map((t) => (
                   <span key={t} className="tag">{t}</span>
                 ))}

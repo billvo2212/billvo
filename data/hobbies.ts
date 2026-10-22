@@ -1,4 +1,3 @@
-// TODO: swap these out for things that are actually true about you.
 // each hobby renders as a "file" — the preview is what shows when hovered/opened.
 export type Hobby = {
   filename: string;
@@ -12,44 +11,36 @@ export const hobbies: Hobby[] = [
     filename: "coffee.md",
     size: "4.2K",
     title: "Coffee",
-    body: `Pour-over, mostly. I've been trying to figure out what makes a good light roast — turns out the answer is \`$EXPENSIVE_BEANS\` and water temperature discipline.
-
-If you have cafe recs in Vancouver, send them.`,
+    body: `Coffee to me is like gas to cars you know, ... I'm not addicted to it, ... it just ... yeh`,
   },
   {
     filename: "games.txt",
     size: "7.1K",
     title: "Games",
-    body: `Mostly single-player story games — I don't have the reflexes for competitive FPS. Currently playing: TODO.
-
-All-time: Hollow Knight, Celeste, Outer Wilds. I will not shut up about Outer Wilds.`,
+    body: `Mostly just League.`,
   },
   {
     filename: "music.m3u",
     size: "128B",
     title: "Music",
-    body: `Lo-fi for working, indie rock for walking, Vietnamese ballads when I'm feeling homesick.
-
-I made a playlist. I will put it here eventually.`,
+    body: `Shout out to Post Malone, Kendrick Lamar, B-ray, HIEUTHUHAI, MCK (and many more) to keep my brain "sane".`,
   },
   {
     filename: "cooking.recipe",
     size: "2.4K",
     title: "Cooking",
-    body: `Mostly Vietnamese food — pho, bun bo hue, com tam. Trying to learn how to make bread that doesn't come out like a brick.
-
-TODO: add my dad's pho broth recipe here (if he lets me).`,
+    body: `Mostly Vietnamese food dishes. Trying to learn how to make bread that doesn't come out like a brick.`,
   },
   {
     filename: "running.gpx",
     size: "9.8K",
     title: "Running",
-    body: `Half-marathon-ish distances when I'm being honest with myself. Mostly along the seawall.`,
+    body: `They said CS student should touch grass. yk yk.`,
   },
   {
     filename: "photography.raw",
     size: "22M",
     title: "Photography",
-    body: `Film cameras because the delay forces patience. See /photos.`,
+    body: `Take a snapshot whenever I feel good so that can re-visit it in memories. See /photos.`,
   },
 ];
